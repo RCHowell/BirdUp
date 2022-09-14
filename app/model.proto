@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package birdup;
+
+message Location {
+  int32 id = 1;
+  string name = 2;
+}
+
+message History {
+  repeated uint32 times = 1;
+  repeated float temp = 2;
+  repeated float windSpeed = 3;
+  repeated float windDirection = 4;
+  repeated float pressure = 5;
+  repeated float humidity = 6;
+}
+
+message Sample {
+  int32 location = 1;
+  uint32 timestamp = 2;
+  float temp = 3;
+  float tempMax = 4;
+  float tempMin = 5;
+  float pressure = 6;
+  float humidity = 7;
+  float windSpeed = 8;
+  float windSpeedMax = 9;
+  float windDirection = 10;
+  float voltage = 11;
+  float voltageMax = 12;
+  float voltageMin = 13;
+  float a = 14;
+  float aMax = 15;
+  float r = 16;
+  float ex = 17;
+  float ed = 18;
+  float er = 19;
+}
