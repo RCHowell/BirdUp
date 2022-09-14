@@ -1,5 +1,7 @@
 // For now just MIN, MAX, AVG, SUM, COUNT
 
+import 'dart:math';
+
 abstract class Accumulator {
   double get value;
 
@@ -90,4 +92,31 @@ class CountAccumulator implements Accumulator {
   reset() {
     value = 0;
   }
+}
+
+// https://en.wikipedia.org/wiki/Circular_mean
+class AngleAvgAccumulator extends Accumulator {
+
+  var _sins = 0.0;
+  var _coss = 0.0;
+  var _n = 0.0;
+
+  @override
+  add(double v) {
+    var r = v * pi / 180;
+    _sins += sin(r);
+    _coss += cos(r);
+    _n += 1;
+  }
+
+  @override
+  reset() {
+    _sins = 0.0;
+    _coss = 0.0;
+    _n = 0.0;
+  }
+
+  @override
+  double get value => atan2((1/_n) * _sins, (1/_n) * _coss);
+
 }

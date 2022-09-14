@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-// TODO draw all windgrams
+final Uri _olney = Uri.parse("http://wxtofly.net/i.htm");
+
 class WindgramPage extends StatelessWidget {
-
   late final List<_Gram> grams;
 
   WindgramPage({Key? key}) : super(key: key) {
@@ -27,42 +28,64 @@ class WindgramPage extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Column(
-            children: const [
-              Text(
-                'Windgram',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
+  Widget build(BuildContext context) => DefaultTabController(
+        initialIndex: 0,
+        length: grams.length,
+        child: Scaffold(
+            appBar: AppBar(
+              title: GestureDetector(
+                onTap: () async {
+                  await launchUrl(_olney);
+                },
+                child: Column(
+                  children: const [
+                    Text(
+                      'Windgram',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 4.0),
+                      child: Text(
+                        "wxtofly.net",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 10.0,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 4.0),
-                child: Text(
-                  "wxtofly.net",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 10.0,
-                  ),
-                ),
+              backgroundColor: Colors.black,
+              bottom: TabBar(
+                indicatorColor: Colors.red,
+                tabs: grams
+                    .map(
+                      (g) => Tab(
+                        text: g.label,
+                      ),
+                    )
+                    .toList(),
               ),
-            ],
-          ),
-          backgroundColor: Colors.black,
-        ),
-        backgroundColor: Colors.black,
-        body: Center(
-          child: PhotoView(
-            imageProvider: const NetworkImage(
-              'http://wxtofly.net/Tiger_windgram.png',
             ),
-          ),
-        ),
+            backgroundColor: Colors.black,
+            body: TabBarView(
+              children: grams
+                  .map(
+                    (g) => Center(
+                      child: PhotoView(
+                        imageProvider: NetworkImage(g.url),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            )),
       );
 }
 

@@ -76,7 +76,7 @@ class _Compass extends StatelessWidget {
           children: [
             CustomPaint(
               foregroundPainter: CompassPainter(
-                angle: sample?.windDirection ?? 0.0,
+                radians: sample?.windDirection ?? 0.0,
               ),
               child: Center(
                 child: Column(
@@ -107,11 +107,9 @@ class _Compass extends StatelessWidget {
 }
 
 class CompassPainter extends CustomPainter {
-  final double angle;
+  final double radians;
 
-  CompassPainter({required this.angle}) : super();
-
-  double get rotation => angle * pi / 180;
+  CompassPainter({required this.radians}) : super();
 
   List<double> angles = [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75];
 
@@ -138,13 +136,13 @@ class CompassPainter extends CustomPainter {
     Offset end = Offset(center.dx, center.dy - 28);
 
     canvas.translate(center.dx, center.dy);
-    canvas.rotate(rotation);
+    canvas.rotate(radians);
     canvas.translate(-center.dx, -center.dy);
     canvas.drawCircle(center, radius, circle);
 
     // draw ticks
     for (double a in angles) {
-      double ang = a * pi - rotation;
+      double ang = a * pi - radians;
       Offset start =
           Offset(center.dx + 28 * cos(ang), center.dy + 28 * sin(ang));
       Offset end =

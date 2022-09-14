@@ -291,7 +291,7 @@ class _BodyState extends State<_Body> {
       case 0:
         // windDirection
         return (v) => Transform.rotate(
-              angle: (v + 180) * pi / 180.0,
+              angle: (v + pi),
               child: const Icon(
                 Icons.arrow_upward_sharp,
                 color: Colors.black,

@@ -36,7 +36,7 @@ extension Histogram on History {
 
     var maxWindSpeedAcc = MaxAccumulator();
     var minWindSpeedAcc = MinAccumulator();
-    var avgWindSpeedAcc = AvgAccumulator();
+    var avgWindSpeedAcc = AngleAvgAccumulator();
     var avgWindDirectionAcc = AvgAccumulator();
     var avgPressureAcc = AvgAccumulator();
     var avgTemperatureAcc = AvgAccumulator();

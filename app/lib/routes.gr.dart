@@ -36,7 +36,7 @@ class _$Routes extends RootStackRouter {
     },
     WindgramRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: const WindgramPage());
+          routeData: routeData, child: WindgramPage());
     }
   };
 

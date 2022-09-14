@@ -27,6 +27,8 @@ final List<Location> locations = [
   ),
 ];
 
+final Uri _drw = Uri.parse("https://drw.selfip.com");
+
 class RootPage extends StatelessWidget {
 
   final GlobalKey<_RootBodyState> _body = GlobalKey();
@@ -46,29 +48,34 @@ class RootPage extends StatelessWidget {
         },
       ),
       centerTitle: true,
-      title: Column(
-        children: const [
-          Text(
-            'Tiger',
-            style: TextStyle(
-              color: Colors.white,
-              fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.bold,
-              fontSize: 18.0,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 4.0),
-            child: Text(
-              "drw.selfip.com",
+      title: GestureDetector(
+        onTap: () async {
+          await launchUrl(_drw);
+        },
+        child: Column(
+          children: const [
+            Text(
+              'Tiger',
               style: TextStyle(
                 color: Colors.white,
                 fontStyle: FontStyle.italic,
-                fontSize: 10.0,
+                fontWeight: FontWeight.bold,
+                fontSize: 18.0,
               ),
             ),
-          ),
-        ],
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 4.0),
+              child: Text(
+                "drw.selfip.com",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 10.0,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       backgroundColor: Colors.black,
       systemOverlayStyle: SystemUiOverlayStyle.light,
@@ -189,13 +196,13 @@ class _FeedbackDialog extends StatelessWidget {
         ),
         actions: <Widget>[
           TextButton(
-            child: const Text('OK'),
             onPressed: () {
               Navigator.of(context).pop();
             },
             style: TextButton.styleFrom(
               primary: Colors.blueGrey,
             ),
+            child: const Text('OK'),
           ),
         ],
       );

@@ -1,6 +1,6 @@
 part of 'history_table_bloc.dart';
 
-// TODO does this belong somewhere else?
+// Does this belong somewhere else?
 class HistoryTableModel {
   List<Location> locations;
   List<DateTime> times;
