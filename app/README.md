@@ -10,7 +10,7 @@
 - [x] Forecasting data plan
 - [x] Refresh button / pull to refresh
 - [x] Use min/max and gust instead of pressure and humidity data
-- [ ] Add fixed legend to the history table
+- [x] Add fixed legend to the history table
 
 ## Overview
 

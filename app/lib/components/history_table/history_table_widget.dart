@@ -137,7 +137,7 @@ class _Head extends StatelessWidget {
         children: [
           Container(
             height: _headerHeight,
-            width: _cellWidth,
+            width: _cellWidth * 2,
             decoration: BoxDecoration(
               border: Border(
                 right: BorderSide(color: borderColor),
@@ -226,7 +226,7 @@ class _BodyState extends State<_Body> {
     return Row(
       children: [
         Container(
-          width: _cellWidth,
+          width: _cellWidth * 2,
           decoration: BoxDecoration(
             border: Border(
               right: BorderSide(color: borderColor),
@@ -238,10 +238,7 @@ class _BodyState extends State<_Body> {
             physics: const ClampingScrollPhysics(),
             children: widget.data.locations
                 .map(
-                  (l) => _LocationTitle(
-                    name: l.name,
-                    height: _fields * _cellHeight,
-                  ),
+                  (l) => _LocationTitle(name: l.name),
                 )
                 .toList(),
           ),
@@ -336,32 +333,77 @@ typedef _CellFactory = Widget Function(double v);
 
 class _LocationTitle extends StatelessWidget {
   final String name;
-  final double height;
-  final double width;
+  final double _height = 5 * _cellHeight;
 
-  const _LocationTitle({
-    required this.name,
-    required this.height,
-    this.width = 40.0,
+  const _LocationTitle({required this.name});
+
+  @override
+  Widget build(BuildContext context) => Container(
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: borderColor),
+          ),
+        ),
+        child: Row(
+          children: [
+            RotatedBox(
+              quarterTurns: 3,
+              child: Container(
+                // flip
+                height: _cellWidth - 2,
+                width: _height - 1,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Colors.blueGrey[100]!),
+                  ),
+                ),
+                child: Text(
+                  name,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: _height - 1,
+              width: _cellWidth,
+              child: Column(
+                children: const [
+                  _HeaderCell(label: '°'),
+                  _HeaderCell(label: 'MPH', grey: true),
+                  _HeaderCell(label: '°F'),
+                  _HeaderCell(label: 'mBar', grey: true),
+                  _HeaderCell(label: '%', last: true),
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+}
+
+class _HeaderCell extends StatelessWidget {
+  final String label;
+  final bool grey;
+  final bool last;
+
+  const _HeaderCell({
+    required this.label,
+    this.grey = false,
+    this.last = false,
   });
 
   @override
-  Widget build(BuildContext context) => RotatedBox(
-        quarterTurns: 3,
-        child: Container(
-          height: width,
-          // flip
-          width: height,
-          // flip
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            border: Border(
-              left: BorderSide(color: borderColor),
-            ),
-          ),
-          child: Text(
-            name,
-            textAlign: TextAlign.center,
+  Widget build(BuildContext context) => Container(
+        width: _cellWidth,
+        height: (!last) ? _cellHeight : _cellHeight - 1,
+        decoration:
+            BoxDecoration(color: (grey) ? Colors.blueGrey[50]! : Colors.white),
+        alignment: Alignment.center,
+        child: Text(
+          label,
+          style: const TextStyle(
+            fontSize: 10.0,
           ),
         ),
       );

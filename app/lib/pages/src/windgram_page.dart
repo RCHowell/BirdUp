@@ -5,24 +5,24 @@ import 'package:url_launcher/url_launcher.dart';
 final Uri _olney = Uri.parse("http://wxtofly.net/i.htm");
 
 class WindgramPage extends StatelessWidget {
-  late final List<_Gram> grams;
+  late final List<_Gram> _grams;
 
   WindgramPage({Key? key}) : super(key: key) {
-    // Force daily cache by adding a dummy key to the url
+    // Force hourly cache by adding an hourly identifier to the url
     var now = DateTime.now();
-    var day = "${now.year}-${now.month}-${now.day}";
-    grams = [
+    var id = "${now.year}-${now.month}-${now.day}-${now.hour}";
+    _grams = [
       _Gram(
         label: 'I',
-        url: 'http://wxtofly.net/Tiger_windgram.png?day=$day',
+        url: 'http://wxtofly.net/Tiger_windgram.png?id=$id',
       ),
       _Gram(
         label: 'II',
-        url: 'http://wxtofly.net/TigerHikeLookout_windgram.png?day=$day',
+        url: 'http://wxtofly.net/TigerHikeLookout_windgram.png?id=$id',
       ),
       _Gram(
         label: 'LZ',
-        url: 'http://wxtofly.net/TigerLZ_windgram.png?day=$day',
+        url: 'http://wxtofly.net/TigerLZ_windgram.png?id=$id',
       ),
     ];
   }
@@ -30,7 +30,7 @@ class WindgramPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => DefaultTabController(
         initialIndex: 0,
-        length: grams.length,
+        length: _grams.length,
         child: Scaffold(
             appBar: AppBar(
               title: GestureDetector(
@@ -65,7 +65,7 @@ class WindgramPage extends StatelessWidget {
               backgroundColor: Colors.black,
               bottom: TabBar(
                 indicatorColor: Colors.red,
-                tabs: grams
+                tabs: _grams
                     .map(
                       (g) => Tab(
                         text: g.label,
@@ -76,7 +76,7 @@ class WindgramPage extends StatelessWidget {
             ),
             backgroundColor: Colors.black,
             body: TabBarView(
-              children: grams
+              children: _grams
                   .map(
                     (g) => Center(
                       child: PhotoView(
