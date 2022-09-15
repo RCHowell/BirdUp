@@ -76,7 +76,8 @@ class _Compass extends StatelessWidget {
           children: [
             CustomPaint(
               foregroundPainter: CompassPainter(
-                radians: sample?.windDirection ?? 0.0,
+                windSpeed: sample?.windSpeed ?? 0.0,
+                radians: (sample?.windDirection ?? 0.0) * pi / 180,
               ),
               child: Center(
                 child: Column(
@@ -108,8 +109,12 @@ class _Compass extends StatelessWidget {
 
 class CompassPainter extends CustomPainter {
   final double radians;
+  final double windSpeed;
 
-  CompassPainter({required this.radians}) : super();
+  CompassPainter({
+    required this.radians,
+    required this.windSpeed,
+  }) : super();
 
   List<double> angles = [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75];
 
@@ -150,7 +155,9 @@ class CompassPainter extends CustomPainter {
       canvas.drawLine(start, end, tick);
     }
 
-    canvas.drawLine(start, end, needle);
+    if (windSpeed >= 1) {
+      canvas.drawLine(start, end, needle);
+    }
   }
 
   @override
