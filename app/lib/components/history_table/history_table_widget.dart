@@ -146,7 +146,7 @@ class _Head extends StatelessWidget {
             ),
             alignment: Alignment.center,
             child: const Text(
-              '4h',
+              '-4h',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
