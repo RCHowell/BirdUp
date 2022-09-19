@@ -95,6 +95,7 @@ class CountAccumulator implements Accumulator {
 }
 
 // https://en.wikipedia.org/wiki/Circular_mean
+// Circular mean of 0-360
 class AngleAvgAccumulator extends Accumulator {
 
   var _sins = 0.0;
