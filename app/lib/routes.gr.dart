@@ -34,9 +34,9 @@ class _$Routes extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const CamPage());
     },
-    WindgramRoute.name: (routeData) {
+    GramRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: WindgramPage());
+          routeData: routeData, child: GramPage());
     }
   };
 
@@ -45,7 +45,7 @@ class _$Routes extends RootStackRouter {
         RouteConfig(RootRoute.name, path: '/'),
         RouteConfig(ChartRoute.name, path: '/chart-page'),
         RouteConfig(CamRoute.name, path: '/cam-page'),
-        RouteConfig(WindgramRoute.name, path: '/windgram-page')
+        RouteConfig(GramRoute.name, path: '/windgram-page')
       ];
 }
 
@@ -104,9 +104,9 @@ class CamRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [WindgramPage]
-class WindgramRoute extends PageRouteInfo<void> {
-  const WindgramRoute() : super(WindgramRoute.name, path: '/windgram-page');
+/// [GramPage]
+class GramRoute extends PageRouteInfo<void> {
+  const GramRoute() : super(GramRoute.name, path: '/gram-page');
 
-  static const String name = 'WindgramRoute';
+  static const String name = 'GramRoute';
 }

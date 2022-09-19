@@ -4,10 +4,8 @@ import 'package:mailto/mailto.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-final Uri _olney = Uri.parse("http://wxtofly.net/i.htm");
-
-class WindgramPage extends StatelessWidget {
-  const WindgramPage({Key? key}) : super(key: key);
+class GramPage extends StatelessWidget {
+  const GramPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => DefaultTabController(
@@ -46,8 +44,8 @@ class WindgramPage extends StatelessWidget {
             ]),
           ),
           body: TabBarView(children: [
-            _GramView(),
-            _GramView(),
+            _WindgramView(),
+            _MeteogramView(),
           ]),
           backgroundColor: Colors.black,
         ),
@@ -64,24 +62,24 @@ class _Gram {
   });
 }
 
-class _GramView extends StatelessWidget {
+class _WindgramView extends StatelessWidget {
   late final List<_Gram> _grams;
 
-  _GramView() {
+  _WindgramView() {
     // Force hourly cache by adding an hourly identifier to the url
     var now = DateTime.now();
     var id = "${now.year}-${now.month}-${now.day}-${now.hour}";
     _grams = [
       _Gram(
-        label: 'I',
+        label: 'Tiger',
         url: 'http://wxtofly.net/Tiger_windgram.png?id=$id',
       ),
       _Gram(
-        label: 'II',
+        label: 'TigerLookout',
         url: 'http://wxtofly.net/TigerHikeLookout_windgram.png?id=$id',
       ),
       _Gram(
-        label: 'LZ',
+        label: 'TigerLZ',
         url: 'http://wxtofly.net/TigerLZ_windgram.png?id=$id',
       ),
     ];
@@ -106,12 +104,9 @@ class _GramView extends StatelessWidget {
                   ),
                 );
               },
-              child: Container(
-                // padding: const EdgeInsets.all(12.0),
-                child: AspectRatio(
-                  aspectRatio: 1.0,
-                  child: Hero(tag: g.label, child: Image.network(g.url)),
-                ),
+              child: AspectRatio(
+                aspectRatio: 1.0,
+                child: Hero(tag: g.label, child: Image.network(g.url)),
               ),
             ),
           )
@@ -119,7 +114,6 @@ class _GramView extends StatelessWidget {
 }
 
 class _HeroPhotoViewRouteWrapper extends StatelessWidget {
-
   final String title;
   final String subtitle;
   late final Uri _uri;
@@ -142,7 +136,7 @@ class _HeroPhotoViewRouteWrapper extends StatelessWidget {
           backgroundColor: Colors.black,
           title: GestureDetector(
             onTap: () async {
-              await launchUrl(_olney);
+              await launchUrl(_uri);
             },
             child: Column(
               children: [
@@ -183,7 +177,6 @@ class _HeroPhotoViewRouteWrapper extends StatelessWidget {
 }
 
 class _FeedbackDialog extends StatelessWidget {
-
   final Uri _contact = Uri.parse(Mailto(
     to: ['contact@birdup.cloud'],
     subject: 'Forecast Contact',
@@ -191,39 +184,85 @@ class _FeedbackDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => AlertDialog(
-    title: const Text("Feedback"),
-    content: RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-        style: const TextStyle(
-          color: Colors.black,
-          height: 1.6,
-        ),
-        children: [
-          const TextSpan(text: "Have a forecast you want included?\n"),
-          TextSpan(
-            text: "contact@birdup.cloud",
+        title: const Text("Feedback"),
+        content: RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
             style: const TextStyle(
-              color: Colors.redAccent,
+              color: Colors.black,
+              height: 1.6,
             ),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () async {
-                await launchUrl(_contact);
-              },
+            children: [
+              const TextSpan(text: "Have a forecast you want included?\n"),
+              TextSpan(
+                text: "contact@birdup.cloud",
+                style: const TextStyle(
+                  color: Colors.redAccent,
+                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () async {
+                    await launchUrl(_contact);
+                  },
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            style: TextButton.styleFrom(
+              primary: Colors.blueGrey,
+            ),
+            child: const Text('OK'),
           ),
         ],
-      ),
-    ),
-    actions: <Widget>[
-      TextButton(
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-        style: TextButton.styleFrom(
-          primary: Colors.blueGrey,
-        ),
-        child: const Text('OK'),
-      ),
-    ],
-  );
+      );
+}
+
+class _MeteogramView extends StatelessWidget {
+  late final List<_Gram> _grams;
+
+  late final _base =
+      "https://forecast.weather.gov/meteograms/Plotter.php?lat=47.50421&lon=-122.00455&wfo=SEW&zcode=WAZ505&gset=20&gdiff=10&unit=0&tinfo=EY5&pcmd=111011111100000000000000000000000000000000000000000000000&lg=en&indu=1!1!1&dd=0&nocache=1663599671";
+
+  _MeteogramView() {
+    _grams = [
+      _Gram(label: "0", url: "$_base&ahour=0"),
+      _Gram(label: "48", url: "$_base&ahour=48"),
+      _Gram(label: "72", url: "$_base&ahour=72"),
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) => ListView(
+      children: _grams
+          .map(
+            (g) => GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => _HeroPhotoViewRouteWrapper(
+                      title: 'Soarcast',
+                      subtitle: 'omnistep.com/soarcast',
+                      imageProvider: NetworkImage(g.url),
+                      url:
+                          "https://www.omnistep.com/soarcast/soarcast.php?s=tiger",
+                      tag: g.label,
+                    ),
+                  ),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Hero(tag: g.label, child: Image.network(g.url)),
+                ),
+              ),
+            ),
+          )
+          .toList());
 }

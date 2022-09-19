@@ -12,7 +12,7 @@ void main() {
       acc.add(i);
     }
     var radians = acc.value;
-    var hour = radians * 24 / (2 * pi) % 24;
+    var hour = (radians * 24 / (2 * pi)) % 24;
     expect(hour, 19.0);
   });
 }

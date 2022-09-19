@@ -83,7 +83,7 @@ class RootPage extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.map_outlined),
               onPressed: () {
-                context.router.push(const WindgramRoute());
+                context.router.push(const GramRoute());
               },
             ),
             IconButton(

@@ -11,7 +11,7 @@ part 'routes.gr.dart';
     AutoRoute(page: RootPage, initial: true),
     AutoRoute(page: ChartPage),
     AutoRoute(page: CamPage),
-    AutoRoute(page: WindgramPage),
+    AutoRoute(page: GramPage),
   ],
 )
 
