@@ -20,6 +20,7 @@ class HistoryModel {
     required this.avgWindDirection,
     required this.avgTemperature,
   });
+
 }
 
 extension Histogram on History {
@@ -36,8 +37,8 @@ extension Histogram on History {
 
     var maxWindSpeedAcc = MaxAccumulator();
     var minWindSpeedAcc = MinAccumulator();
-    var avgWindSpeedAcc = AngleAvgAccumulator();
-    var avgWindDirectionAcc = AvgAccumulator();
+    var avgWindSpeedAcc = AvgAccumulator();
+    var avgWindDirectionAcc = AngleAvgAccumulator();
     var avgPressureAcc = AvgAccumulator();
     var avgTemperatureAcc = AvgAccumulator();
 

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -341,48 +343,54 @@ class _WindDirectionChartState extends State<_WindDirectionChart> {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-    height: 120.0,
-    child: SfCartesianChart(
-      zoomPanBehavior: _zoomPanBehavior,
-      trackballBehavior: _trackballBehavior,
-      primaryXAxis: DateTimeAxis(
-        zoomFactor: _zoomFactor,
-        zoomPosition: _zoomPan,
-        name: 'x::axis',
-      ),
-      primaryYAxis: NumericAxis(
-        maximum: 360.0,
-        minimum: 0.0,
-        interval: 90.0,
-      ),
-      onZooming: (ZoomPanArgs args) {
-        if (args.axis?.name == 'x::axis') {
-          _zoomPan = args.currentZoomPosition;
-          _zoomFactor = args.currentZoomFactor;
-          // sync other charts
-          _windSpeedChartKey.currentState!.refresh();
-          _temperatureChartKey.currentState!.refresh();
-          _pressureChartKey.currentState!.refresh();
-        }
-      },
-      series: <ChartSeries>[
-        ScatterSeries<double?, DateTime>(
-          name: 'dir',
-          legendIconType: LegendIconType.circle,
-          dataSource: widget.data.avgWindDirection,
-          xValueMapper: (_, i) => widget.data.times[i],
-          yValueMapper: (v, _) => v,
-          color: widget.theme.series['dir'],
-          animationDelay: 0.0,
-          animationDuration: 500,
-          markerSettings: const MarkerSettings(
-            height: 4.0,
-            width: 4.0,
+        height: 120.0,
+        child: SfCartesianChart(
+          zoomPanBehavior: _zoomPanBehavior,
+          trackballBehavior: _trackballBehavior,
+          primaryXAxis: DateTimeAxis(
+            zoomFactor: _zoomFactor,
+            zoomPosition: _zoomPan,
+            name: 'x::axis',
           ),
+          primaryYAxis: NumericAxis(
+            maximum: 360.0,
+            minimum: 0.0,
+            interval: 90.0,
+          ),
+          onZooming: (ZoomPanArgs args) {
+            if (args.axis?.name == 'x::axis') {
+              _zoomPan = args.currentZoomPosition;
+              _zoomFactor = args.currentZoomFactor;
+              // sync other charts
+              _windSpeedChartKey.currentState!.refresh();
+              _temperatureChartKey.currentState!.refresh();
+              _pressureChartKey.currentState!.refresh();
+            }
+          },
+          series: <ChartSeries>[
+            ScatterSeries<double?, DateTime>(
+              name: 'dir',
+              legendIconType: LegendIconType.circle,
+              dataSource: widget.data.avgWindDirection.map((r) {
+                if (r == null) {
+                  return null;
+                } else {
+                  return (r * 180 / pi) % 360;
+                }
+              }).toList(),
+              xValueMapper: (_, i) => widget.data.times[i],
+              yValueMapper: (v, _) => v,
+              color: widget.theme.series['dir'],
+              animationDelay: 0.0,
+              animationDuration: 500,
+              markerSettings: const MarkerSettings(
+                height: 4.0,
+                width: 4.0,
+              ),
+            ),
+          ],
         ),
-      ],
-    ),
-  );
+      );
 }
 
 // ==================
@@ -436,41 +444,41 @@ class _TemperatureChartState extends State<_TemperatureChart> {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-    height: 120.0,
-    child: SfCartesianChart(
-      zoomPanBehavior: _zoomPanBehavior,
-      trackballBehavior: _trackballBehavior,
-      primaryXAxis: DateTimeAxis(
-        zoomFactor: _zoomFactor,
-        zoomPosition: _zoomPan,
-        name: 'x::axis',
-      ),
-      primaryYAxis: NumericAxis(
-        minimum: 0.0,
-        interval: 10.0,
-      ),
-      onZooming: (ZoomPanArgs args) {
-        if (args.axis?.name == 'x::axis') {
-          _zoomPan = args.currentZoomPosition;
-          _zoomFactor = args.currentZoomFactor;
-          // sync other charts
-          _windSpeedChartKey.currentState!.refresh();
-          _pressureChartKey.currentState!.refresh();
-          _windDirectionChartKey.currentState!.refresh();
-        }
-      },
-      series: <ChartSeries>[
-        FastLineSeries<double?, DateTime>(
-          name: 'dir',
-          legendIconType: LegendIconType.circle,
-          dataSource: widget.data.avgTemperature,
-          xValueMapper: (_, i) => widget.data.times[i],
-          yValueMapper: (v, _) => v,
-          color: widget.theme.series['temp'],
-          animationDelay: 0.0,
-          animationDuration: 500,
+        height: 120.0,
+        child: SfCartesianChart(
+          zoomPanBehavior: _zoomPanBehavior,
+          trackballBehavior: _trackballBehavior,
+          primaryXAxis: DateTimeAxis(
+            zoomFactor: _zoomFactor,
+            zoomPosition: _zoomPan,
+            name: 'x::axis',
+          ),
+          primaryYAxis: NumericAxis(
+            minimum: 0.0,
+            interval: 10.0,
+          ),
+          onZooming: (ZoomPanArgs args) {
+            if (args.axis?.name == 'x::axis') {
+              _zoomPan = args.currentZoomPosition;
+              _zoomFactor = args.currentZoomFactor;
+              // sync other charts
+              _windSpeedChartKey.currentState!.refresh();
+              _pressureChartKey.currentState!.refresh();
+              _windDirectionChartKey.currentState!.refresh();
+            }
+          },
+          series: <ChartSeries>[
+            FastLineSeries<double?, DateTime>(
+              name: 'dir',
+              legendIconType: LegendIconType.circle,
+              dataSource: widget.data.avgTemperature,
+              xValueMapper: (_, i) => widget.data.times[i],
+              yValueMapper: (v, _) => v,
+              color: widget.theme.series['temp'],
+              animationDelay: 0.0,
+              animationDuration: 500,
+            ),
+          ],
         ),
-      ],
-    ),
-  );
+      );
 }

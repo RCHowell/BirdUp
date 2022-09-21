@@ -1,10 +1,10 @@
 import 'dart:math';
 
+import 'package:birdup/components/history/history_model.dart';
 import 'package:flutter/material.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 import 'package:birdup/components/history_table/history_table_bloc.dart';
 import 'package:birdup/model/model.pb.dart';
-import 'package:birdup/repo/station.dart';
 
 const double _cellWidth = 40;
 const double _cellHeight = 28;
@@ -51,7 +51,9 @@ class _HistoryTableWidgetState extends State<HistoryTableWidget> {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        height: widget.data.locations.length * widget.data.fields * _cellHeight,
+        height: widget.data.locations.length *
+            HistoryTableModel.fields *
+            _cellHeight,
         child: Column(
           children: [
             _Head(
@@ -202,7 +204,7 @@ class _BodyState extends State<_Body> {
   late ScrollController _firstColumnController;
   late ScrollController _restColumnsController;
 
-  late final int _fields = widget.data.fields;
+  late final int _fields = HistoryTableModel.fields;
   late final List<Location> _locations = widget.data.locations;
   late final int _count = widget.data.times.length;
 
@@ -258,19 +260,28 @@ class _BodyState extends State<_Body> {
                 children: List.generate(_locations.length * _fields, (row) {
                   int location = row ~/ _fields;
                   int ordinal = row % _fields;
-                  History history = widget.data.history[location];
+                  HistoryModel history = widget.data.history[location];
                   _CellFactory factory = _cellFactory(ordinal);
-                  List<double> data = history.field(row % _fields);
+                  List<double?> data = history.field(ordinal);
                   return Row(
-                    children: List.generate(_count, (column) {
-                      return _Cell(
+                    children: List.generate(
+                      _count,
+                      (column) => _Cell(
                         color: (ordinal.isOdd)
                             ? Colors.blueGrey[50]!
                             : Colors.white,
                         isLast: ordinal + 1 == _fields,
-                        child: factory(data[column]),
-                      );
-                    }),
+                        child: (column < data.length)
+                            ? factory(data[column])
+                            : const Text(
+                                "-",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 11.0,
+                                ),
+                              ),
+                      ),
+                    ),
                   );
                 }),
               ),
@@ -287,39 +298,40 @@ class _BodyState extends State<_Body> {
     switch (ordinal) {
       case 0:
         // windDirection
-        return (v) => Transform.rotate(
-              angle: (v + pi),
-              child: const Icon(
-                Icons.arrow_upward_sharp,
-                color: Colors.black,
-                size: 16.0,
-              ),
-            );
+        return (v) => (v != null)
+            ? Transform.rotate(
+                angle: (v + pi),
+                child: const Icon(
+                  Icons.arrow_upward_sharp,
+                  color: Colors.black,
+                  size: 16.0,
+                ),
+              )
+            : Text(
+                "-",
+                textAlign: TextAlign.center,
+                style: _textStyle,
+              );
       case 1:
-        // windAvg
-        return (v) => Text(
-              (!v.isNaN) ? v.toStringAsFixed(1) : "-",
-              textAlign: TextAlign.center,
-              style: _textStyle,
-            );
       case 2:
-        // tempAvg
-        return (v) => Text(
-              (!v.isNaN) ? "${v.toStringAsFixed(0)}°" : "-",
-              textAlign: TextAlign.center,
-              style: _textStyle,
-            );
       case 3:
-        // pressure
+        // windMax, windAvg, windMin
         return (v) => Text(
-              (!v.isNaN) ? v.toStringAsFixed(1) : "-",
+              (v != null && !v.isNaN) ? v.toStringAsFixed(1) : "-",
               textAlign: TextAlign.center,
               style: _textStyle,
             );
       case 4:
-        // humidity
+        // tempAvg
         return (v) => Text(
-              (!v.isNaN) ? "${v.toStringAsFixed(0)}﹪" : "-",
+              (v != null && !v.isNaN) ? "${v.toStringAsFixed(0)}°" : "-",
+              textAlign: TextAlign.center,
+              style: _textStyle,
+            );
+      case 5:
+        // pressure
+        return (v) => Text(
+              (v != null && !v.isNaN) ? v.toStringAsFixed(1) : "-",
               textAlign: TextAlign.center,
               style: _textStyle,
             );
@@ -329,13 +341,13 @@ class _BodyState extends State<_Body> {
   }
 }
 
-typedef _CellFactory = Widget Function(double v);
+typedef _CellFactory = Widget Function(double? v);
 
 class _LocationTitle extends StatelessWidget {
   final String name;
-  final double _height = 5 * _cellHeight;
+  final double _height = HistoryTableModel.fields * _cellHeight;
 
-  const _LocationTitle({required this.name});
+  _LocationTitle({required this.name});
 
   @override
   Widget build(BuildContext context) => Container(
@@ -369,11 +381,12 @@ class _LocationTitle extends StatelessWidget {
               width: _cellWidth,
               child: Column(
                 children: const [
-                  _HeaderCell(label: '°'),
-                  _HeaderCell(label: 'MPH', grey: true),
+                  _HeaderCell(label: '⦵'),
+                  _HeaderCell(label: 'Gust', grey: true),
+                  _HeaderCell(label: 'Avg', grey: true),
+                  _HeaderCell(label: 'Lull', grey: true),
                   _HeaderCell(label: '°F'),
-                  _HeaderCell(label: 'mBar', grey: true),
-                  _HeaderCell(label: '%', last: true),
+                  _HeaderCell(label: 'mBar', grey: true, last: true),
                 ],
               ),
             )
