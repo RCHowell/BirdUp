@@ -3,7 +3,7 @@ description: DRW Weather Station Client
 
 publish_to: 'none'
 
-version: 0.0.1+1
+version: 1.0.0
 
 environment:
   sdk: ">=2.17.5 <3.0.0"
