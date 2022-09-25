@@ -10,6 +10,7 @@ class CamPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Column(
             children: const [
               Text(

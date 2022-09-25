@@ -13,6 +13,7 @@ class GramPage extends StatelessWidget {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             title: const Text(
               'Soarcast',
               style: TextStyle(
@@ -134,6 +135,7 @@ class _HeroPhotoViewRouteWrapper extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
+          centerTitle: true,
           title: GestureDetector(
             onTap: () async {
               await launchUrl(_uri);

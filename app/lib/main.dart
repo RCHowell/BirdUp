@@ -10,7 +10,7 @@ GetIt injector = GetIt.instance;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitDown,
+    DeviceOrientation.portraitUp,
   ]);
   runApp(Phoenix(child: const App()));
 }
