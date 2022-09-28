@@ -2,15 +2,9 @@
 
 > Tiger Mountain Paragliding Weather
 
-## TODO
-- [x] Fix NaN
-- [x] Historical graph page
-- [x] Use empty data point rather than discarding sample
-- [x] Live cam
-- [x] Forecasting data plan
-- [x] Refresh button / pull to refresh
-- [x] Use min/max and gust instead of pressure and humidity data
-- [x] Add fixed legend to the history table
+iOS: https://apps.apple.com/us/app/bird-up-soarcast/id1645894330
+Android: https://play.google.com/store/apps/details?id=io.github.rchowell.birdup
+
 
 ## Overview
 
