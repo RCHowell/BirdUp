@@ -2,9 +2,9 @@
 
 > Tiger Mountain Paragliding Weather
 
-iOS: https://apps.apple.com/us/app/bird-up-soarcast/id1645894330
-Android: https://play.google.com/store/apps/details?id=io.github.rchowell.birdup
-
+| iOS | Android | Web |
+|-----|---------|-----|
+| [App Store](https://apps.apple.com/us/app/bird-up-soarcast/id1645894330) | [Play Store](https://play.google.com/store/apps/details?id=io.github.rchowell.birdup) | https://birdup.cloud/ |
 
 ## Overview
 
