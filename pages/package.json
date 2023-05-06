@@ -1,0 +1,29 @@
+{
+  "name": "birdup-pages",
+  "version": "1.0.0",
+  "description": "Tiger Mountain Paragliding Live Weather and Forecast",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RCHowell/birdup.git"
+  },
+  "author": "R. C. Howell",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RCHowell/birdup/issues"
+  },
+  "homepage": "https://github.com/RCHowell/birdup#readme",
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "pug": "^3.0.2"
+  },
+  "devDependencies": {
+    "grunt": "^1.5.3",
+    "grunt-webpack": "^5.0.0",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  }
+}

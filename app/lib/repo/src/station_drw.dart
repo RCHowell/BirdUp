@@ -92,9 +92,9 @@ class StationDrw extends Station {
       //windSpeed: 0.621371 * (map['windspeed'] as num).toDouble(),
       windSpeed: (map['windspeed'] as num).toDouble(),
       // MPH
-      temp: (map['temperature'] as num).toDouble() * (9 / 5) + 32,
-      pressure: (map['pressure'] as num).toDouble(),
-      humidity: (map['humidity'] as num).toDouble(),
+      temp: ((map['temperature'] ?? 0) as num).toDouble() * (9 / 5) + 32,
+      pressure: ((map['pressure'] ?? 0) as num).toDouble(),
+      humidity: ((map['humidity'] ?? 0) as num).toDouble(),
     );
   }
 

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:birdup/components/history/history_bloc.dart';
 import 'package:birdup/components/history/history_model.dart';
@@ -36,24 +37,38 @@ class HistoryTableBloc extends Bloc<HistoryTableEvent, HistoryTableState> {
     Emitter<HistoryTableState> emit,
   ) async {
     try {
+
+      List<Location> locations = List.empty(growable: true);
       List<StationResBackFill> backfill = List.empty(growable: true);
 
-      // Load all. This is bad code.
+      // Load all. This is bad code. Needs to be serialized though.
       for (var location in event.locations) {
+
+        // Callback
         StationResBackFill? data;
         station.on<StationResBackFill>(location.id, (res) {
           data = res;
         });
         station.emit(StationReqBackFill(location.id));
 
-        DateTime expiration = DateTime.now().add(const Duration(seconds: 30));
+        // try to get the current station in 15 seconds
+        DateTime expiration = DateTime.now().add(const Duration(seconds: 15));
         while (data == null) {
           await Future.delayed(waitTime);
           if (DateTime.now().isAfter(expiration)) {
-            throw Exception("timed out");
+            break;
           }
         }
-        backfill.add(data!);
+
+        // Add to list
+        if (data != null && (data?.history.times.isNotEmpty == true)) {
+          locations.add(location);
+          backfill.add(data!);
+        }
+      }
+
+      if (backfill.isEmpty) {
+        throw Exception("timed out");
       }
 
       List<HistoryModel> history =
@@ -71,13 +86,13 @@ class HistoryTableBloc extends Bloc<HistoryTableEvent, HistoryTableState> {
       emit(
         HistoryTableStateData(
           data: HistoryTableModel(
-            locations: event.locations,
+            locations: locations,
             times: times,
             history: history,
           ),
         ),
       );
-    } catch (e) {
+    } catch (ex, stacktrace) {
       emit(HistoryTableStateEmpty());
     }
   }
