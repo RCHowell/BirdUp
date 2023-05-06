@@ -1,13 +1,8 @@
-import _ from 'lodash';
+const pug = import('pug');
+const constants = import('./constants');
 
-function component() {
-  const element = document.createElement('div');
-
-  // Lodash, currently included via a script, is required for this line to work
-  element.innerHTML = _.join(['Hello', 'webpack'], ' ');
-
-  return element;
-}
-
-document.body.appendChild(component());
-
+window.onload = async () => {
+  const container = document.getElementById('main');
+  const template = pug.compileFile("template.pug", {});
+  container.innerHTML = template(constants);
+};
